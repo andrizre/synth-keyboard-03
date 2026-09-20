@@ -1,9 +1,8 @@
 # synth-keyboard
 
-Daily vibe coding project \u2014 2026-09-20.
+A playable browser synthesizer built on the WebAudio API: click the keys or use the home row (a through k) to play notes.
 
-Built for fun in one sitting, part of a daily habit of shipping something small
-and complete. Self-contained: no build step, no dependencies.
+Self-contained: no build step, no dependencies.
 
 ## Run
 
