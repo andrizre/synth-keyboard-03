@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Synth Keyboard</title>
+<style>html,body{margin:0;height:100%;background:#1a1018;display:grid;place-items:center}
+#wrap{white-space:nowrap;direction:rtl}
+kbd{display:inline-block;width:56px;height:180px;background:#eee;border:1px solid #888;border-radius:0 0 6px 6px;margin:2px;font:13px monospace;text-align:center;padding-top:8px;cursor:pointer;user-select:none;vertical-align:top}
+kbd.b{background:#111;color:#eee;height:112px;margin-left:-30px;margin-right:-30px;position:relative;z-index:1}
+kbd:active{background:#cfe}
+</style></head><body><div id="wrap"></div><script>
+const NOTES={a:'C4',w:'C\u266F4',s:'D4',e:'D\u266F4',d:'E4',f:'F4',t:'F\u266F4',g:'G4',y:'G\u266F4',h:'A4',u:'A\u266F4',j:'B4',k:'C5'};
+const FREQ={C4:261.63,'C\u266F4':277.18,D4:293.66,'D\u266F4':311.13,E4:329.63,F4:349.23,'F\u266F4':369.99,G4:392,'G\u266F4':415.3,A4:440,'A\u266F4':466.16,B4:493.88,C5:523.25};
+const AC=window.AudioContext||window.webkitAudioContext;let ac=null;
+const wrap=document.getElementById('wrap');
+for(const k in NOTES){const el=document.createElement('kbd');
+ el.textContent=k+' '+NOTES[k];el.dataset.n=NOTES[k];
+ el.className=NOTES[k].includes('\u266F')?'b':'';
+ el.onmousedown=()=>tone(NOTES[k]);wrap.appendChild(el);}
+addEventListener('keydown',e=>{if(NOTES[e.key]&&!e.repeat)tone(NOTES[e.key]);});
+function tone(n){ac=ac||new AC();const f=ac.createOscillator(),g=ac.createGain();
+ f.type='sawtooth';f.frequency.value=FREQ[n];f.connect(g);g.connect(ac.destination);
+ const t=ac.currentTime;g.gain.setValueAtTime(.0001,t);
+ g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+ f.start(t);f.stop(t+.6);}
+</script></body></html>
